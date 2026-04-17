@@ -1,4 +1,4 @@
-import { getAnalytics } from '@/services/analytics.service';
+import { getAnalytics } from '@/services/analytics.services';
 
 export async function GET() {
     try {
