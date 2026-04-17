@@ -1,19 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 
-export default function UserForm() {
-    const router = useRouter();
+interface UserFormProps {
+    onUserCreated?: () => void;
+}
 
+export default function UserForm({ onUserCreated }: UserFormProps) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         setError('');
+        setSuccessMessage('');
         setLoading(true);
 
         try {
@@ -36,7 +39,9 @@ export default function UserForm() {
 
             setName('');
             setEmail('');
-            router.refresh();
+            setSuccessMessage('User created successfully.');
+
+            onUserCreated?.();
         } catch (err) {
             if (err instanceof Error) {
                 setError(err.message);
@@ -49,50 +54,56 @@ export default function UserForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className='mb-6 space-y-4 rounded border p-4'>
-            <h2 className='text-lg font-semibold'>Create user</h2>
+        <section className='mb-8 rounded border p-5 shadow-sm'>
+            <h2 className='mb-4 text-lg font-semibold'>Create User</h2>
 
-            <div className='space-y-2'>
-                <label htmlFor='name' className='block text-sm font-medium'>
-                    Name
-                </label>
-                <input
-                    id='name'
-                    type='text'
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                    className='w-full rounded border px-3 py-2'
-                    placeholder='Enter name'
-                    required
-                />
-            </div>
+            <form onSubmit={handleSubmit} className='space-y-4'>
+                <div>
+                    <label htmlFor='name' className='mb-1 block text-sm font-medium'>
+                        Name
+                    </label>
+                    <input
+                        id='name'
+                        type='text'
+                        value={name}
+                        onChange={(event) => setName(event.target.value)}
+                        placeholder='Enter user name'
+                        className='w-full rounded border px-3 py-2'
+                        required
+                    />
+                </div>
 
-            <div className='space-y-2'>
-                <label htmlFor='email' className='block text-sm font-medium'>
-                    Email
-                </label>
-                <input
-                    id='email'
-                    type='email'
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    className='w-full rounded border px-3 py-2'
-                    placeholder='Enter email'
-                    required
-                />
-            </div>
+                <div>
+                    <label htmlFor='email' className='mb-1 block text-sm font-medium'>
+                        Email
+                    </label>
+                    <input
+                        id='email'
+                        type='email'
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                        placeholder='Enter user email'
+                        className='w-full rounded border px-3 py-2'
+                        required
+                    />
+                </div>
 
-            {error ? (
-                <p className='text-sm text-red-600'>{error}</p>
-            ) : null}
+                {error ? (
+                    <p className='text-sm text-red-600'>{error}</p>
+                ) : null}
 
-            <button
-                type='submit'
-                disabled={loading}
-                className='rounded bg-black px-4 py-2 text-white disabled:opacity-50'
-            >
-                {loading ? 'Creating...' : 'Create user'}
-            </button>
-        </form>
+                {successMessage ? (
+                    <p className='text-sm text-green-600'>{successMessage}</p>
+                ) : null}
+
+                <button
+                    type='submit'
+                    disabled={loading}
+                    className='rounded bg-black px-4 py-2 text-white disabled:opacity-50'
+                >
+                    {loading ? 'Creating...' : 'Create User'}
+                </button>
+            </form>
+        </section>
     );
 }

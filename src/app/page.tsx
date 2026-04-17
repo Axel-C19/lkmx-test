@@ -1,35 +1,23 @@
+'use client';
+
+import { useState } from 'react';
 import UserForm from '@/components/users/user-form';
 import UserManagement from '@/components/users/user-management';
 
-async function getUsers() {
-    const response = await fetch('http://localhost:3000/api/users', {
-        cache: 'no-store'
-    });
+export default function UsersPage() {
+    const [refreshKey, setRefreshKey] = useState(0);
 
-    if (!response.ok) {
-        throw new Error('Failed to fetch users');
+    function triggerRefresh() {
+        setRefreshKey((prev) => prev + 1);
     }
 
-    return response.json();
-}
-
-export default function UsersPage() {
     return (
         <main className='mx-auto max-w-4xl p-6'>
-            <header className='mb-8'>
-                <h1 className='text-3xl font-bold'>User Management</h1>
-                <p className='mt-2 text-sm text-gray-600'>
-                    Create, search, edit and deactivate users.
-                </p>
-            </header>
+            <h1 className='mb-6 text-2xl font-bold'>User Management</h1>
 
-            <section className='mb-8'>
-                <UserForm />
-            </section>
+            <UserForm onUserCreated={triggerRefresh} />
 
-            <section>
-                <UserManagement />
-            </section>
+            <UserManagement refreshKey={refreshKey} />
         </main>
     );
 }
