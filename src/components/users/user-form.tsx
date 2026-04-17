@@ -55,11 +55,11 @@ export default function UserForm({ onUserCreated }: UserFormProps) {
 
     return (
         <section className='mb-8 rounded border p-5 shadow-sm'>
-            <h2 className='mb-4 text-lg font-semibold'>Create User</h2>
+            <h2 className='mb-4 text-lg font-semibold text-gray-600'>Create User</h2>
 
             <form onSubmit={handleSubmit} className='space-y-4'>
                 <div>
-                    <label htmlFor='name' className='mb-1 block text-sm font-medium'>
+                    <label htmlFor='name' className='mb-1 block text-sm font-medium text-gray-600'>
                         Name
                     </label>
                     <input
@@ -74,7 +74,7 @@ export default function UserForm({ onUserCreated }: UserFormProps) {
                 </div>
 
                 <div>
-                    <label htmlFor='email' className='mb-1 block text-sm font-medium'>
+                    <label htmlFor='email' className='mb-1 block text-sm font-medium text-gray-600'>
                         Email
                     </label>
                     <input

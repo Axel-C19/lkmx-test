@@ -144,7 +144,7 @@ export default function UserManagement({
     return (
         <section className='rounded border p-5 shadow-sm'>
             <div className='mb-4'>
-                <h2 className='text-lg font-semibold'>Manage Users</h2>
+                <h2 className='text-lg font-semibold text-gray-600'>Manage Users</h2>
                 <p className='mt-1 text-sm text-gray-600'>
                     Search, edit and deactivate existing users.
                 </p>
@@ -200,14 +200,14 @@ export default function UserManagement({
                                         type='text'
                                         value={editName}
                                         onChange={(event) => setEditName(event.target.value)}
-                                        className='w-full rounded border px-3 py-2'
+                                        className='w-full rounded border px-3 py-2 '
                                     />
                                 </div>
 
                                 <div>
                                     <label
                                         htmlFor={`edit-email-${user.id}`}
-                                        className='mb-1 block text-sm font-medium'
+                                        className='mb-1 block text-sm font-medium '
                                     >
                                         Email
                                     </label>
@@ -216,7 +216,7 @@ export default function UserManagement({
                                         type='email'
                                         value={editEmail}
                                         onChange={(event) => setEditEmail(event.target.value)}
-                                        className='w-full rounded border px-3 py-2'
+                                        className='w-full rounded border px-3 py-2 text-gray-600'
                                     />
                                 </div>
 

@@ -80,3 +80,38 @@ export async function softDeleteUser(id: number): Promise<User | null> {
 
     return result.rows[0] ?? null;
 }
+
+export async function getUserAnalytics() {
+    const totalUsersResult = await pool.query(
+        'SELECT COUNT(*)::int AS total FROM users'
+    );
+
+    const activeUsersResult = await pool.query(
+        "SELECT COUNT(*)::int AS total FROM users WHERE status = 'active'"
+    );
+
+    const deletedUsersResult = await pool.query(
+        "SELECT COUNT(*)::int AS total FROM users WHERE status = 'deleted'"
+    );
+
+    const usersTodayResult = await pool.query(`
+    SELECT COUNT(*)::int AS total
+    FROM users
+    WHERE DATE(created_at) = CURRENT_DATE
+  `);
+
+    const latestUsersResult = await pool.query(`
+    SELECT id, name, email, status, created_at, updated_at
+    FROM users
+    ORDER BY created_at DESC
+    LIMIT 5
+  `);
+
+    return {
+        totalUsers: totalUsersResult.rows[0].total,
+        activeUsers: activeUsersResult.rows[0].total,
+        deletedUsers: deletedUsersResult.rows[0].total,
+        usersCreatedToday: usersTodayResult.rows[0].total,
+        latestUsers: latestUsersResult.rows
+    };
+}
