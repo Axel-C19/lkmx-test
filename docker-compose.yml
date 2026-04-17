@@ -1,4 +1,17 @@
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lkmx-app
+    ports:
+      - '3000:3000'
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/lkmx_test
+      NODE_ENV: production
+    depends_on:
+      - db
+
   db:
     image: postgres:16
     container_name: lkmx-postgres
