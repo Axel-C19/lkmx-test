@@ -2,9 +2,12 @@ import { ZodError } from 'zod';
 import { addUser, listUsers } from '@/services/user.services';
 import { createUserSchema } from '@/validations/user.schema';
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
-        const users = await listUsers();
+        const { searchParams } = new URL(request.url);
+        const search = searchParams.get('search') ?? '';
+
+        const users = await listUsers(search);
         return Response.json(users);
     } catch (error) {
         console.error('GET /api/users error:', error);
